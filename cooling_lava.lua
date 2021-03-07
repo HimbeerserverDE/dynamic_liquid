@@ -55,7 +55,7 @@ local dynamic_cools_lava_flowing = {"group:dynamic_cools_lava_flowing", "group:c
 local dynamic_lava_flowing_destroys = {
 	"group:dynamic_lava_flowing_destroys",
 	"mcl_core:water_flowing",
-	"mcl_core:river_water_flowing",
+	"mclx_core:river_water_flowing",
 	"mcl_core:snow",
 	"mcl_core:snowblock"
 }
@@ -114,7 +114,7 @@ local dynamic_cools_lava_source = {"group:dynamic_cools_lava_source"}
 for name, node_def in pairs(minetest.registered_nodes) do
 	-- We don't want "flowing" nodes to cool lava source blocks, otherwise when water falls onto a large pool of lava there's
 	-- way too many blocks turned to obsidian.
-	if minetest.get_item_group(name, "cools_lava") > 0 and name ~= "mcl_core:water_flowing" and name ~= "mcl_core:river_water_flowing" then
+	if minetest.get_item_group(name, "cools_lava") > 0 and name ~= "mcl_core:water_flowing" and name ~= "mclx_core:river_water_flowing" then
 		table.insert(dynamic_cools_lava_source, name)
 	end
 end
@@ -123,9 +123,9 @@ end
 local dynamic_lava_source_destroys = {
 	"group:dynamic_lava_source_destroys",
 	"mcl_core:water_source",
-	"mcl_core:river_water_source",
+	"mclx_core:river_water_source",
 	"mcl_core:water_flowing",
-	"mcl_core:river_water_flowing",
+	"mclx_core:river_water_flowing",
 	"mcl_core:ice",
 	"mcl_core:snow",
 	"mcl_core:snowblock"

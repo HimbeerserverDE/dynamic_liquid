@@ -179,7 +179,7 @@ if water then
 	dynamic_liquid.liquid_abm("mcl_core:water_source", "mcl_core:water_flowing", water_probability)
 end
 if river_water then	
-	dynamic_liquid.liquid_abm("mcl_core:river_water_source", "mcl_core:river_water_flowing", river_water_probability)
+	dynamic_liquid.liquid_abm("mclx_core:river_water_source", "mclx_core:river_water_flowing", river_water_probability)
 end
 
 -- Flow-through nodes
@@ -381,8 +381,8 @@ if springs then
 		_doc_items_longdesc = S("A natural spring that generates an endless stream of water source blocks"),
 		_doc_items_usagehelp = S("Generates one source block of water directly on top of itself once per second, provided the space is clear. If this natural spring is dug out the flow stops and it is turned into ordinary cobble."),
 		drops = "mcl_core:gravel",
-		tiles = {"mcl_core_cobble.png^[combine:16x80:0,-48=crack_anylength.png",
-			"mcl_core_cobble.png","mcl_core_cobble.png","mcl_core_cobble.png","mcl_core_cobble.png","mcl_core_cobble.png",
+		tiles = {"default_cobble.png^[combine:16x80:0,-48=crack_anylength.png",
+			"default_cobble.png","default_cobble.png","default_cobble.png","default_cobble.png","default_cobble.png",
 			},
 		is_ground_content = false,
 		groups = {cracky = 3, stone = 2},
@@ -565,3 +565,13 @@ if displace_liquid then
 	end)
 
 end
+
+minetest.register_lbm({
+	name = "dynamic_liquid:replace_river_water",
+	nodenames = {"mclx_core:river_water_source", "mclx_core:river_water_flowing"},
+	run_at_every_load = true,
+	action = function(pos, node)
+		node.name = node.name:gsub("river_", ""):gsub("mclx", "mcl")
+		minetest.swap_node(pos, node)
+	end,
+})
