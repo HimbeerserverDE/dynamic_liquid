@@ -140,7 +140,7 @@ else
 
 end
 
-if not minetest.get_modpath("default") then
+if not minetest.get_modpath("mcl_core") then
 	return
 end
 
@@ -168,18 +168,18 @@ local springs = minetest.settings:get_bool("dynamic_liquid_springs", true)
 if water then
 	-- override water_source and water_flowing with liquid_renewable set to false
 	local override_def = {liquid_renewable = false}
-	minetest.override_item("default:water_source", override_def)
-	minetest.override_item("default:water_flowing", override_def)
+	minetest.override_item("mcl_core:water_source", override_def)
+	minetest.override_item("mcl_core:water_flowing", override_def)
 end
 
 if lava then
-	dynamic_liquid.liquid_abm("default:lava_source", "default:lava_flowing", lava_probability)
+	dynamic_liquid.liquid_abm("mcl_core:lava_source", "mcl_core:lava_flowing", lava_probability)
 end
 if water then
-	dynamic_liquid.liquid_abm("default:water_source", "default:water_flowing", water_probability)
+	dynamic_liquid.liquid_abm("mcl_core:water_source", "mcl_core:water_flowing", water_probability)
 end
 if river_water then	
-	dynamic_liquid.liquid_abm("default:river_water_source", "default:river_water_flowing", river_water_probability)
+	dynamic_liquid.liquid_abm("mcl_core:river_water_source", "mcl_core:river_water_flowing", river_water_probability)
 end
 
 -- Flow-through nodes
@@ -258,22 +258,22 @@ if flow_through then
 		minetest.override_item(node_name,{groups = new_groups})
 	end
 
-	if minetest.get_modpath("default") then
+	if minetest.get_modpath("mcl_core") then
 		for _, name in pairs({
-			"default:apple",
-			"default:papyrus",
-			"default:dry_shrub",
-			"default:bush_stem",
-			"default:acacia_bush_stem",
-			"default:sign_wall_wood",
-			"default:sign_wall_steel",
-			"default:ladder_wood",
-			"default:ladder_steel",
-			"default:fence_wood",
-			"default:fence_acacia_wood",
-			"default:fence_junglewood",
-			"default:fence_pine_wood",
-			"default:fence_aspen_wood",
+			"mcl_core:apple",
+			"mcl_core:papyrus",
+			"mcl_core:dry_shrub",
+			"mcl_core:bush_stem",
+			"mcl_core:acacia_bush_stem",
+			"mcl_core:sign_wall_wood",
+			"mcl_core:sign_wall_steel",
+			"mcl_core:ladder_wood",
+			"mcl_core:ladder_steel",
+			"mcl_core:fence_wood",
+			"mcl_core:fence_acacia_wood",
+			"mcl_core:fence_junglewood",
+			"mcl_core:fence_pine_wood",
+			"mcl_core:fence_aspen_wood",
 		}) do
 			add_flow_through(name)
 		end
@@ -313,7 +313,7 @@ end
 
 -- register damp clay whether we're going to set the ABM or not, if the user disables this feature we don't want existing
 -- spring clay to turn into unknown nodes.
-local clay_def = duplicate_def("default:clay")
+local clay_def = duplicate_def("mcl_core:clay")
 clay_def.description = S("Damp Clay")
 if not springs then
 	clay_def.groups.not_in_creative_inventory = 1 -- take it out of creative inventory though
@@ -323,7 +323,7 @@ minetest.register_node("dynamic_liquid:clay", clay_def)
 local data = {}
 
 if springs then	
-	local c_clay = minetest.get_content_id("default:clay")
+	local c_clay = minetest.get_content_id("mcl_core:clay")
 	local c_spring_clay = minetest.get_content_id("dynamic_liquid:clay")
 
 	-- Turn mapgen clay into spring clay
@@ -346,7 +346,7 @@ if springs then
 	minetest.register_abm({
 		label = "dynamic_liquid damp clay spring",
 		nodenames = {"dynamic_liquid:clay"},
-		neighbors = {"air", "default:water_source", "default:water_flowing"},
+		neighbors = {"air", "mcl_core:water_source", "mcl_core:water_flowing"},
 		interval = 1,
 		chance = 1,
 		catch_up = false,
@@ -357,9 +357,9 @@ if springs then
 				pos.y = pos.y + 1
 				check_node = get_node(pos)
 				check_node_name = check_node.name
-				if check_node_name == "air" or check_node_name == "default:water_flowing" then
-					set_node(pos, {name="default:water_source"})
-				elseif check_node_name ~= "default:water_source" then
+				if check_node_name == "air" or check_node_name == "mcl_core:water_flowing" then
+					set_node(pos, {name="mcl_core:water_source"})
+				elseif check_node_name ~= "mcl_core:water_source" then
 					--Something's been put on top of this clay, don't send water through it
 					break
 				end
@@ -368,10 +368,10 @@ if springs then
 	})
 	
 	local spring_sounds = nil
-	if default.node_sound_gravel_defaults ~= nil then
-		spring_sounds = default.node_sound_gravel_defaults()
-	elseif default.node_sound_sand_defaults ~= nil then
-		spring_sounds = default.node_sound_dirt_defaults()
+	if mcl_core.node_sound_gravel_mcl_cores ~= nil then
+		spring_sounds = mcl_core.node_sound_gravel_mcl_cores()
+	elseif mcl_core.node_sound_sand_mcl_cores ~= nil then
+		spring_sounds = mcl_core.node_sound_dirt_mcl_cores()
 	end
 	
 	-- This is a creative-mode only node that produces a modest amount of water continuously no matter where it is.
@@ -380,9 +380,9 @@ if springs then
 		description = S("Spring"),
 		_doc_items_longdesc = S("A natural spring that generates an endless stream of water source blocks"),
 		_doc_items_usagehelp = S("Generates one source block of water directly on top of itself once per second, provided the space is clear. If this natural spring is dug out the flow stops and it is turned into ordinary cobble."),
-		drops = "default:gravel",
-		tiles = {"default_cobble.png^[combine:16x80:0,-48=crack_anylength.png",
-			"default_cobble.png","default_cobble.png","default_cobble.png","default_cobble.png","default_cobble.png",
+		drops = "mcl_core:gravel",
+		tiles = {"mcl_core_cobble.png^[combine:16x80:0,-48=crack_anylength.png",
+			"mcl_core_cobble.png","mcl_core_cobble.png","mcl_core_cobble.png","mcl_core_cobble.png","mcl_core_cobble.png",
 			},
 		is_ground_content = false,
 		groups = {cracky = 3, stone = 2},
@@ -392,7 +392,7 @@ if springs then
 	minetest.register_abm({
 		label = "dynamic_liquid creative spring",
 		nodenames = {"dynamic_liquid:spring"},
-		neighbors = {"air", "default:water_flowing"},
+		neighbors = {"air", "mcl_core:water_flowing"},
 		interval = 1,
 		chance = 1,
 		catch_up = false,
@@ -400,8 +400,8 @@ if springs then
 			pos.y = pos.y + 1
 			local check_node = get_node(pos)
 			local check_node_name = check_node.name
-			if check_node_name == "air" or check_node_name == "default:water_flowing" then
-				set_node(pos, {name="default:water_source"})
+			if check_node_name == "air" or check_node_name == "mcl_core:water_flowing" then
+				set_node(pos, {name="mcl_core:water_source"})
 			end
 		end
 	})	
@@ -412,7 +412,7 @@ local mapgen_prefill = minetest.settings:get_bool("dynamic_liquid_mapgen_prefill
 local waternodes
 
 if mapgen_prefill then
-	local c_water = minetest.get_content_id("default:water_source")
+	local c_water = minetest.get_content_id("mcl_core:water_source")
 	local c_air = minetest.get_content_id("air")
 	waternodes = {}
 
