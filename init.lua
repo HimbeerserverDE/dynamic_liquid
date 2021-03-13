@@ -10,6 +10,7 @@ local modpath = minetest.get_modpath(modname)
 local S = minetest.get_translator(modname)
 
 dofile(modpath.."/cooling_lava.lua")
+dofile(modpath.."/moving_player.lua")
 
 -- By making this giant table of all possible permutations of horizontal direction we can avoid
 -- lots of redundant calculations.
